@@ -13,4 +13,3 @@ def add(x, y):
 def subtract(x, y):
     """x - y 결과값 리턴"""
     return y - x
-
