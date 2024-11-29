@@ -1,13 +1,11 @@
 """
-데이터베이스가 실행되기를 기다리는 명령어
+Django command to wait for the database to be available.
 """
 import time
-
 from psycopg2 import OperationalError as Psycopg2OpError
-
+from django.db import connections
 from django.db.utils import OperationalError
 from django.core.management.base import BaseCommand
-from django.db import connections
 
 
 class Command(BaseCommand):
@@ -16,12 +14,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         """Entrypoint for command."""
         self.stdout.write('Waiting for database...')
-        db_conn = None
-        while not db_conn:
+        while True:
             try:
-                db_conn = connections['default']
+                connection = connections['default']
+                connection.ensure_connection()  # 연결 강제 확인
+                self.stdout.write(self.style.SUCCESS('Database available!'))
+                break
             except (OperationalError, Psycopg2OpError):
                 self.stdout.write('Database unavailable, waiting 1 second...')
                 time.sleep(1)
-
-        self.stdout.write(self.style.SUCCESS('Database available!'))
