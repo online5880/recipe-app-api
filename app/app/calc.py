@@ -1,15 +1,13 @@
 """
-계산 함수
+Calculator functions
 """
 
 
 def add(x, y):
-    """
-    x, y 를 더한 값을 리턴
-    """
+    """Add x and y and return result."""
     return x + y
 
 
 def subtract(x, y):
-    """x - y 결과값 리턴"""
+    """Subtract x from y and return result."""
     return y - x
